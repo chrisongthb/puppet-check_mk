@@ -1,0 +1,10 @@
+---
+check_mk::client::package_name: 'check-mk-agent'
+check_mk::client::package_ensure: 'present'
+check_mk::client::configuration_item_path: '/etc/check_mk'
+check_mk::client::configuration_item_default_mode: '0644'
+check_mk::client::library_item_path: '/usr/lib/check_mk_agent'
+check_mk::client::library_item_default_mode: '0755'
+
+check_mk::server::required_packages:
+  - 'python-rrdtool'
