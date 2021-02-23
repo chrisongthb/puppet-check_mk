@@ -22,6 +22,8 @@ define check_mk::client::library_item (
   Optional[Array[String[1]]] $required_packages   = undef,
 ){
 
+  contain check_mk::client
+
   # install required packages, if given
   if $required_packages {
     ensure_packages($required_packages, {'ensure' => 'installed'})

@@ -5,22 +5,19 @@
 #
 # @api private
 #
-class check_mk::client::install (
-  $package_name     = $::check_mk::client::package_name,
-  $package_ensure   = $::check_mk::client::package_ensure,
-  $package_source   = $::check_mk::client::package_source,
-  $package_provider = $::check_mk::client::package_provider,
+class check_mk::client::install {
 
-){
   assert_private()
 
-  if $package_source {
-    if $package_provider {
+  contain check_mk::client
+
+  if $check_mk::client::package_source {
+    if $check_mk::client::package_provider {
       package { 'check_mk_agent':
         ensure   => present,
-        name     => $package_name,
-        provider => $package_provider,
-        source   => $package_source,
+        name     => $check_mk::client::package_name,
+        provider => $check_mk::client::package_provider,
+        source   => $check_mk::client::package_source,
       }
     }
     else {
@@ -29,8 +26,8 @@ class check_mk::client::install (
   }
   else {
     package { 'check_mk_agent':
-      ensure => $package_ensure,
-      name   => $package_name,
+      ensure => $check_mk::client::package_ensure,
+      name   => $check_mk::client::package_name,
     }
   }
 

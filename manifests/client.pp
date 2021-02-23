@@ -46,8 +46,8 @@ class check_mk::client (
   Optional[String[1]]                                          $package_provider                      = undef,
 ){
 
-  contain ::check_mk::client::install
-  contain ::check_mk::client::config
+  contain check_mk::client::install
+  contain check_mk::client::config
 
   Class['::check_mk::client::install']
   -> Class['::check_mk::client::config']
@@ -57,7 +57,7 @@ class check_mk::client (
 
   # manage encryption.cfg
   if $encryption_passphrase {
-    ::check_mk::client::configuration_item { 'encryption':
+    check_mk::client::configuration_item { 'encryption':
       mode   => '0400',
       config => Sensitive("PASSPHRASE=${encryption_passphrase}\nENCRYPTED=yes\nENCRYPTED_RT=yes\n"),
     }
@@ -65,7 +65,7 @@ class check_mk::client (
 
   # manage logwatch.cfg
   if $logwatch_entries {
-    ::check_mk::client::configuration_item { 'logwatch':
+    check_mk::client::configuration_item { 'logwatch':
       config => inline_template("<% @logwatch_entries.map do |logfile, entries| -%><%= logfile %>\n<% entries.each do |entry| -%>  <%= entry %>\n<% end -%>\n<% end -%>"),
     }
   }
@@ -73,7 +73,7 @@ class check_mk::client (
   # manage plugin configs
   if $plugin_configs {
     $plugin_configs.each |String $plugin_config, Hash $attributes| {
-      ::check_mk::client::configuration_item { $plugin_config:
+      check_mk::client::configuration_item { $plugin_config:
         config => $attributes,
       }
     }

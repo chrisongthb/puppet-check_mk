@@ -4,10 +4,12 @@
 #
 # @api private
 #
-class check_mk::server::install(
-  $required_packages = $::check_mk::server::required_packages,
-){
+class check_mk::server::install {
+
   assert_private()
+
+  contain check_mk::server
+  $required_packages = $::check_mk::server::required_packages
 
   if $required_packages {
     $required_packages.each|String[1] $pkg|{
