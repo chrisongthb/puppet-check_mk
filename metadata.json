@@ -5,6 +5,7 @@
   "summary": "Manage check_mk agent and partly server",
   "license": "Apache-2.0",
   "source": "https://github.com/chrisongthb/puppet-check_mk.git",
+  "project_page": "https://github.com/chrisongthb/puppet-check_mk",
   "issues_url": "https://github.com/chrisongthb/puppet-check_mk/issues",
   "dependencies": [
     {
