@@ -11,6 +11,9 @@ describe 'check_mk::client::library_item' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
+      let(:pre_condition) do
+        "contain check_mk::client"
+      end
 
       it { is_expected.to compile }
     end
