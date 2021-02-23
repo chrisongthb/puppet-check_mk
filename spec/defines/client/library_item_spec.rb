@@ -10,6 +10,7 @@ describe 'check_mk::client::library_item' do
   let(:params) do
     {
       library_path: 'plugins',
+      content: 'librarycontent',
     }
   end
 
