@@ -18,8 +18,6 @@ define check_mk::client::configuration_item (
   Optional[String[1]]      $epp_path  = $::check_mk::client::configuration_item_default_epp_path,
 ){
 
-  contain check_mk::client
-
   if $config =~ String[1] {
     file { "${item_path}/${name}.cfg":
       ensure  => 'file',

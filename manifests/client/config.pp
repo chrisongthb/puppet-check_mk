@@ -5,35 +5,28 @@
 #
 # @api private
 #
-class check_mk::client::config {
-
+class check_mk::client::config (
+  $configuration_item_path = $::check_mk::client::configuration_item_path,
+  $library_item_path       = $::check_mk::client::library_item_path,
+){
   assert_private()
 
-  contain check_mk::client
-
   # purge not managed files
-  file { $check_mk::client::configuration_item_path:
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    purge   => true,
-    recurse => true,
-    force   => true,
-  }
-  file { $check_mk::client::library_item_path:
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    purge   => true,
-    recurse => true,
-    force   => true,
+  [ $configuration_item_path, $library_item_path ].each|String[1] $fl|{
+    file { $fl:
+      ensure  => 'directory',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      purge   => true,
+      recurse => true,
+      force   => true,
+    }
   }
 
   # logwatch.state must always be present.
   # check_mk stores the current position of logfiles there
-  file { "${check_mk::client::configuration_item_path}/logwatch.state":
+  file { "${configuration_item_path}/logwatch.state":
     ensure => 'file',
     owner  => 'root',
     group  => 'root',

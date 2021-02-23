@@ -4,12 +4,10 @@
 #
 # @api private
 #
-class check_mk::server::config {
-
+class check_mk::server::config (
+  $htpasswd_users = $::check_mk::server::htpasswd_users,
+){
   assert_private()
-
-  contain check_mk::server
-  $htpasswd_users = $::check_mk::server::htpasswd_users
 
   # handle htpasswd only, if given and if there is the `omdsites` fact
   if $htpasswd_users and $::facts[omdsites] {
