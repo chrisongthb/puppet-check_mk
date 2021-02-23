@@ -1,8 +1,18 @@
-# deploys one library_item file, that is e.g. a plugin or a local check
+# @summary deploys one library_item file, that is e.g. a plugin or a local check
+#
 # delets not managed files
 # rollout either per source (content == undef) or per file content string
 #
-
+# @example
+#   check_mk::client::library_item { 'namevar': library_path => 'plugin', content => 'my\nfancy\ncmk plugin', }
+#
+# @param library_path Is the 'type' of the item. Is usually one of 'plugin' or 'local' (for a cmk local check)
+# @param mode Which file mode to set. Defaults to `$::check_mk::client::library_item_default_mode`
+# @param exec_interval In which interval the item should be executed (cached). Defaults to `$::check_mk::client::library_item_default_exec_interval`
+# @param puppet_path Where to find the item, if $content is not given. The modules searches in "${puppet_path}/${library_path}/${namevar}",
+# @param content A string for direct 'file content' for the item
+# @param required_packages Installes additional packages, if an item requires it.
+#
 define check_mk::client::library_item (
   String[1]                  $library_path,
   String[1]                  $mode                = $::check_mk::client::library_item_default_mode,
@@ -61,7 +71,7 @@ define check_mk::client::library_item (
   }
   else {
     if ! $puppet_path {
-      fail("Expected param \$puppet_path, if \$content is not given. Please specify where to search file source for library item '${name}'.")
+      fail("Expected param \$puppet_path, if \$content is not given. Please specify where to find file source for library item '${name}'.")
     }
     else {
       file { "${::check_mk::client::library_item_path}/${library_path}/${exec_interval}/${name}":

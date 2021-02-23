@@ -1,55 +1,30 @@
-# check_mk client class
-# TODO: configuration items
+# @summary Installs and configures check_mk agent
 #
-# #######
-# example logwatch_entries:
-#   ---
-#   check_mk::client::logwatch_entries:
-#     '/var/log/syslog':
-#       - 'C .*EXT4-fs warning.*ext4_end_bio.*I/O error.*'
-#       - 'C .* segfault at .*'
-#     '/backup/postgres/logs/error.log':
-#       - 'C .'
+# Library- and Configuration- items are indented for those, who don't want or can't use the agent bakery
+# Not managed Library- and Configuration- items will be deleted!
 #
-# #######
-# example plugin_configs (see header in check_mk/templates/client/plugin_configs/* for more doc):
-#   ---
-#   check_mk::client::plugin_configs:
-#     'el_statusseiten':
-#       'hase_status': 'https://ecmhan01:8443/api/hase-status'
-#       'boa_status': 'https://ecmhan01:8446/boa/status'
-#     'apache_status':
-#       'localhost_80':
-#         protocol: 'http'
-#         host: 'localhost'
-#         port: 80
-#       'localhost_443':
-#         protocol: 'https'
-#         host: 'localhost'
-#         port: 443
+# @example
+#   include check_mk::client
 #
-# #######
-# example plugins:
-#   ---
-#   check_mk::client::plugins:
-#     entropy_avail:
-#     mk_inventory.linux:
-#     el_kvm:
-#       exec_interval: 120
+# @param package_name The name of the Check_mk agent package
+# @param package_ensure The `ensure` value to use when installing the agent. This option can be used to install a specific package version.
+# @param configuration_item_path The Check_mk agent base configuration directory (e.g. `/etc/check_mk`)
+# @param configuration_item_default_mode The default file mode for Check_mk agent configuration files. Can be overwritten per configuration_item
+# @param library_item_path The base path of plugins, local checks (e.g. `/usr/lib/check_mk_agent`)
+# @param library_item_default_mode The default file mode for Check_mk agent configuration files. Can be overwritten per library_item.
+# @param library_item_default_exec_interval The default interval of plugins and local checks. This can be used to configure caching for explicit libs.
+# @param library_item_default_file_source_path Where to find the sources of library items rolled out by `source` (and not by content). You can configure you own file storage here (could be an extra repo with special permissions for monitoring admins…)
+# @param encryption_passphrase Wraps an instance of configuration_item and defines the encryption secret for the check_mk_agent.
+# @param logwatch_entries Wraps an instance of configuration_item and defines logwatch entries for the check_mk_agent.
+# @param plugin_configs Is a hash and wraps instances of configuration_item to provide a speaking name for monitoring admins. For examples see README.md
+# @param configuration_items Is a hash and installes files in configuration_item_path (e.g. `/etc/check_mk/mrpe.cfg`). For examples see README.md
+# @param configuration_item_default_epp_path Where to find epp templates, when the $config of a configuration_item is a hash. For examples see README.md
+# @param plugins Is a hash and wraps instances of library_item to provide a speaking name for monitoring admins. For examples see README.md
+# @param local_checks Is a hash and wraps instances of library_item to provide a speaking name for monitoring admins. For examples see README.md
+# @param library_items Is a hash and installes files in library_item_path (e.g. `/usr/lib/check_mk_agent/${library_path}/${name}`). For examples see README.md
+# @param package_source Where to find the package, if you don't have it in a repo.
+# @param package_provider What puppet package provider to use for installing it. Mandatory, if you gave `package_source`.
 #
-# #######
-# example local_checks:
-#   ---
-#   check_mk::client::local_checks:
-#     my_plugin:
-#       required_packages:
-#         - "nmon"
-#       exec_interval: 3600
-#       content: "#!/bin/bash\necho new line is working!\n"
-#     check_locale:
-#     check_foo:
-#
-
 class check_mk::client (
   String[1]                                                    $package_name,
   String[1]                                                    $package_ensure,
@@ -67,10 +42,12 @@ class check_mk::client (
   Optional[Hash[String[1],Optional[Hash[String[1],NotUndef]]]] $plugins                               = undef,
   Optional[Hash[String[1],Optional[Hash[String[1],NotUndef]]]] $local_checks                          = undef,
   Optional[Hash]                                               $library_items                         = undef,
+  Optional[Stdlib::Absolutepath]                               $package_source                        = undef,
+  Optional[String[1]]                                          $package_provider                      = undef,
 ){
 
-  contain ::check_mk::client::install
-  contain ::check_mk::client::config
+  contain check_mk::client::install
+  contain check_mk::client::config
 
   Class['::check_mk::client::install']
   -> Class['::check_mk::client::config']
@@ -80,15 +57,15 @@ class check_mk::client (
 
   # manage encryption.cfg
   if $encryption_passphrase {
-    ::check_mk::client::configuration_item { 'encryption':
+    check_mk::client::configuration_item { 'encryption':
       mode   => '0400',
-      config => "PASSPHRASE=${encryption_passphrase}\nENCRYPTED=yes\nENCRYPTED_RT=yes\n",
+      config => Sensitive("PASSPHRASE=${encryption_passphrase}\nENCRYPTED=yes\nENCRYPTED_RT=yes\n"),
     }
   }
 
   # manage logwatch.cfg
   if $logwatch_entries {
-    ::check_mk::client::configuration_item { 'logwatch':
+    check_mk::client::configuration_item { 'logwatch':
       config => inline_template("<% @logwatch_entries.map do |logfile, entries| -%><%= logfile %>\n<% entries.each do |entry| -%>  <%= entry %>\n<% end -%>\n<% end -%>"),
     }
   }
@@ -96,7 +73,7 @@ class check_mk::client (
   # manage plugin configs
   if $plugin_configs {
     $plugin_configs.each |String $plugin_config, Hash $attributes| {
-      ::check_mk::client::configuration_item { $plugin_config:
+      check_mk::client::configuration_item { $plugin_config:
         config => $attributes,
       }
     }

@@ -1,0 +1,64 @@
+{
+  "name": "chrisonpppt-check_mk",
+  "version": "1.0.0",
+  "author": "https://github.com/chrisongthb",
+  "summary": "Manage check_mk agent and partly server",
+  "license": "Apache-2.0",
+  "source": "https://github.com/chrisongthb/puppet-check_mk.git",
+  "issues_url": "https://github.com/chrisongthb/puppet-check_mk/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=6.6.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04",
+        "18.04",
+        "20.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.18.1",
+  "template-url": "pdk-default#1.18.1",
+  "template-ref": "tags/1.18.1-0-g3d2e75c"
+}
