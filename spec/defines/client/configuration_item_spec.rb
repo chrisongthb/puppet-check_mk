@@ -10,7 +10,7 @@ describe 'check_mk::client::configuration_item' do
   let(:params) do
     {
       config: 'configcontent',
-      item_path: '/etc/check_mk/',
+      item_path: '/etc/check_mk',
       mode: '0400',
     }
   end
@@ -21,7 +21,7 @@ describe 'check_mk::client::configuration_item' do
 
       it { is_expected.to compile.with_all_deps }
       it {
-        is_expected.to create_file('/etc/check_mk/myconfig.cfg').with(
+        is_expected.to contain_file('/etc/check_mk/myconfig.cfg').with(
           'ensure'  => 'file',
           'owner'   => 'root',
           'group'   => 'root',
