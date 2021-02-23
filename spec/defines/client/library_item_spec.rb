@@ -12,7 +12,7 @@ describe 'check_mk::client::library_item' do
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:pre_condition) do
-        "contain check_mk::client"
+        'contain check_mk::client'
       end
 
       it { is_expected.to compile }
