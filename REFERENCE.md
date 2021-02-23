@@ -232,7 +232,7 @@ The following parameters are available in the `check_mk::client::configuration_i
 
 ##### `config`
 
-Data type: `Variant[String[1], Hash]`
+Data type: `Variant[Hash, Sensitive[String[1]], String[1]]`
 
 Give a String for direct `file content` or a hash to deploy the config per epp template. For examples see README.md
 
