@@ -1,5 +1,8 @@
 # check_mk
 
+[![Build Status](https://travis-ci.org/chrisongthb/puppet-check_mk.png?branch=main)](https://travis-ci.org/chrisongthb/puppet-check_mk)
+
+
 <!-- vscode-markdown-toc -->
 * 1. [Description](#Description)
 * 2. [Getting Started](#GettingStarted)
