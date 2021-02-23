@@ -2,6 +2,4 @@
 #
 class check_mk {
 
-  fail('Please refer to README.md on how to use this module.')
-
 }
