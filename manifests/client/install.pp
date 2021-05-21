@@ -17,7 +17,7 @@ class check_mk::client::install (
   if $package_source {
     if $package_provider {
       package { 'check_mk_agent':
-        ensure   => present,
+        ensure   => $package_ensure,
         name     => $package_name,
         provider => $package_provider,
         source   => $package_source,
