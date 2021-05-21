@@ -6,6 +6,7 @@
 # @example
 #   include check_mk::client
 #
+# lint:ignore:140chars
 # @param package_name The name of the Check_mk agent package
 # @param package_ensure The `ensure` value to use when installing the agent. This option can be used to install a specific package version.
 # @param configuration_item_path The Check_mk agent base configuration directory (e.g. `/etc/check_mk`)
@@ -24,6 +25,7 @@
 # @param library_items Is a hash and installes files in library_item_path (e.g. `/usr/lib/check_mk_agent/${library_path}/${name}`). For examples see README.md
 # @param package_source Where to find the package, if you don't have it in a repo.
 # @param package_provider What puppet package provider to use for installing it. Mandatory, if you gave `package_source`.
+# lint:endignore
 #
 class check_mk::client (
   String[1]                                                    $package_name,

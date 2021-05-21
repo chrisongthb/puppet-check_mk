@@ -6,10 +6,12 @@
 # @example
 #   check_mk::client::configuration_item { 'namevar': config => 'my\ncontent', }
 #
+# lint:ignore:140chars
 # @param config Give a String for direct `file content` or a hash to deploy the config per epp template. For examples see README.md
 # @param item_path Where to put the file. Defaults to `$::check_mk::client::configuration_item_path`
 # @param mode Which file mode to set. Defaults to `$::check_mk::client::configuration_item_default_mode`
 # @param epp_path In which path to find to epp template. Defaults to `$::check_mk::client::configuration_item_default_epp_path`. The template has to be named as the namevar of the configuration_item.
+# lint:endignore
 #
 define check_mk::client::configuration_item (
   Variant[Hash, Sensitive[String[1]], String[1]] $config,

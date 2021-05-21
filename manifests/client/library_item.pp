@@ -6,12 +6,14 @@
 # @example
 #   check_mk::client::library_item { 'namevar': library_path => 'plugin', content => 'my\nfancy\ncmk plugin', }
 #
+# lint:ignore:140chars
 # @param library_path Is the 'type' of the item. Is usually one of 'plugin' or 'local' (for a cmk local check)
 # @param mode Which file mode to set. Defaults to `$::check_mk::client::library_item_default_mode`
 # @param exec_interval In which interval the item should be executed (cached). Defaults to `$::check_mk::client::library_item_default_exec_interval`
 # @param puppet_path Where to find the item, if $content is not given. The modules searches in "${puppet_path}/${library_path}/${namevar}",
 # @param content A string for direct 'file content' for the item
 # @param required_packages Installes additional packages, if an item requires it.
+# lint:endignore
 #
 define check_mk::client::library_item (
   String[1]                  $library_path,
