@@ -1,6 +1,6 @@
 {
   "name": "chrisonpppt-check_mk",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "https://github.com/chrisongthb",
   "summary": "Manage check_mk agent and partly server",
   "license": "Apache-2.0",
