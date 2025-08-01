@@ -1,3 +1,0 @@
----
-check_mk::server::required_packages:
-  - 'python3-rrdtool'
