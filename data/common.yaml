@@ -7,4 +7,4 @@ check_mk::client::library_item_path: '/usr/lib/check_mk_agent'
 check_mk::client::library_item_default_mode: '0755'
 
 check_mk::server::required_packages:
-  - 'python-rrdtool'
+  - 'python3-rrdtool'
